@@ -2,7 +2,7 @@
     "name": "mongodb-server-aggregation",
     "description": "Straightforward implementation of mongodb aggregation framework, for SERVER side only. Supports mapReduce, aggregate and distinct.",
     "homepage": "https://github.com/zvictor/meteor-mongo-server",
-    "author": ["Jay Ho (http://superstringsoftware.com)", "zVictor (http://zvictor.net)"],
+    "author": "zVictor (http://zvictor.net)",
     "version": "1.0.0",
     "git": "https://github.com/zvictor/meteor-mongo-server.git",
     "packages": {
