@@ -1,46 +1,36 @@
-meteor-mongo-extensions
-=======================
+mongodb-server-aggregation
+==========================
 
-MapReduce is fixed and working as described below.
+Very simple implementation of some of mongodb aggregation framework functions for Meteor.
 
-Very simple implementation of some of mongodb aggregation framework functions for Meteor. Extends Collection on
-both Server and Client with 3 methods so far so that you can do:
+**Mongodb-server-aggregation** is a fork of [mongodb-aggregation](https://github.com/jhoxray/meteor-mongo-extensions)
+that do not expose the aggregation framework to the client, being available only on server side.
+
+It extends `Collection` with 3 methods so far, **mapReduce**, **distinct** and **aggregate**, so that you can do:
 
 ```coffeescript
     col = new Meteor.Collection "name"
 
-    if Meteor.isClient
-        col.distinct "Field Name", (error, result)->
-            console.dir result
-
-        col.aggregate pipeline, (error, result)->
-            console.dir result
-
-        # just an example - map and reduce need to be defined as strings
-        map = "function() {emit(this.Region, this.Amount);}"
-        reduce = "function(reg, am) { return Array.sum(am);};"
+    if Meteor.isServer
+        # mapReduce
+        map = function() {emit(this.Region, this.Amount);}
+        reduce = function(reg, am) { return Array.sum(am);};
 
         col.mapReduce map, reduce, {out: "out_collection_name", verbose: true}, (err,res)->
             console.dir res.stats # statistics object for running mapReduce
-            col = new Meteor.Collection res.collectionName
-            Meteor.subscribe res.collectionName, ->
-                data = col.find().fetch() # resulting collection
-                console.dir data
-
-
-    if Meteor.isServer
+        
+        # distinct
         result = col.distinct "Field Name"
         console.dir result
 
+        #aggregate
         result = col.aggregate pipeline
         console.dir result
 ```
 
-If called on the client, it simply passes the call to the server collection - so that's mostly a convenience wrapper.
-No visibility permissions are checked, so be careful with what data you may want to expose.
-
-mapReduce call is slightly more advanced: as results of running mapReduce are put into a separate collection,
-it is automatically published on the server so you can subscribe on the client, (theoretically) providing
-reactivity for subsequent calls.
+To install it, run:
+```bash
+$ mrt add mongodb-server-aggregation
+```
 
 This package is MIT Licensed. Do whatever you like with it but any responsibility for doing so is your own.
