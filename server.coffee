@@ -60,6 +60,8 @@ _.extend Meteor.Collection::,
     _futureWrapper @_name, "aggregate", pipeline
 
   mapReduce: (map, reduce, options)->
+    options = options || {};
+    options.readPreference = false;
     _callMapReduce @_name, map, reduce, options
 
 
