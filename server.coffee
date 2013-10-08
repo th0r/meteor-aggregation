@@ -61,7 +61,7 @@ _.extend Meteor.Collection::,
 
   mapReduce: (map, reduce, options)->
     options = options || {};
-    options.readPreference = false;
+    options.readPreference = "primary";
     _callMapReduce @_name, map, reduce, options
 
 
